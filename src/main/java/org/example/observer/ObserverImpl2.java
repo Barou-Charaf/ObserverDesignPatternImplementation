@@ -1,22 +1,26 @@
 package org.example.observer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ObserverImpl2 implements Observer {
-    private int length =1;
-    private int width =1;
-    private int height =1;
+
+    List<Integer> history = new ArrayList<>();
 
     @Override
-    public void update(int length, int width, int height) {
-        this.length = length;
-        this.width = width;
-        this.height = height;
-        this.calculate();
+    public void update(Observable observable) {
+        if (observable instanceof ObservableImpl) {
+            System.out.println("implementation2 update ==============================");
+            addToHistory(((ObservableImpl)observable).getStatus());
+            double sum=0;
+            for (var ele : history) {
+                sum += ele;
+            }
+            System.out.println("Observer implementation 2 result  : " +sum);
+
+        }
     }
-
-
-    @Override
-    public int calculate() {
-        System.out.println("result with +  is : "+(this.length+this.width+this.height));
-        return this.height+this.length+this.width;
+    public void addToHistory(int value){
+        history.add(value);
     }
 }
