@@ -3,13 +3,14 @@ package org.example.observer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ObservableImpl extends Observable {
-
-    List<Observer> observers = new ArrayList<>();
-
+public class ObservableImpl implements Observable {
+    private List<Observer> observers = new ArrayList<>();
+    private int value;
     @Override
     public void addObserver(Observer observer) {
-        observers.add(observer);
+        if(observer != null && !observers.contains(observer)) {
+            observers.add(observer);
+        }
     }
 
     @Override
@@ -17,10 +18,20 @@ public class ObservableImpl extends Observable {
         observers.remove(observer);
     }
 
-
-    public void notifyAll(int a, int b , int c){
-        for(var observer:observers){
-            observer.update(a,b,c);
+    @Override
+    public void notifyObservers() {
+        for(Observer observer : observers) {
+            observer.update(this);
         }
+
+    }
+
+    public void setStatus(int value){
+        this.value = value;
+        notifyObservers();
+    }
+
+    public int getStatus(){
+        return value;
     }
 }
